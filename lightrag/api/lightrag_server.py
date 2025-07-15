@@ -274,13 +274,17 @@ def create_app(args):
         history_messages=None,
         keyword_extraction=False,
         **kwargs,
-    ) -> str:
+        ) -> str:
         keyword_extraction = kwargs.pop("keyword_extraction", None)
         if keyword_extraction:
             kwargs["response_format"] = GPTKeywordExtractionFormat
         if history_messages is None:
             history_messages = []
-        kwargs["temperature"] = args.temperature
+        if args.reasoning_model:
+            kwargs["reasoning_effort"] = args.reasoning_effort
+            kwargs["max_completion_tokens"] = args.max_completion_tokens
+        else:  
+            kwargs["temperature"] = args.temperature
         return await azure_openai_complete_if_cache(
             args.llm_model,
             prompt,

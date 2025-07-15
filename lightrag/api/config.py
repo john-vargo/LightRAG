@@ -369,6 +369,11 @@ def parse_args() -> argparse.Namespace:
 
     ollama_server_infos.LIGHTRAG_MODEL = args.simulated_model_name
 
+    # Inject Reasoning model configuration - ADX
+    args.reasoning_model = get_env_value("IS_REASONING_MODEL", False, bool)
+    args.reasoning_effort = get_env_value("REASONING_EFFORT", "low")
+    args.max_completion_tokens = get_env_value("MAX_COMPLETION_TOKENS", 8192, int)
+    
     return args
 
 
